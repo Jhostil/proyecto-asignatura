@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="WEB-INF/template.xhtml">
+
+
+    <ui:define name="title">#{detalleProductoBean.producto.nombre}</ui:define>
+    <ui:define name="content">
+        <div id="fb-root"></div>
+        <script async="true" defer="true" crossorigin="anonymous"
+                src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&amp;version=v12.0"
+                nonce="JF6XBF1x"></script>
+
+        <div class="row" >
+            <div class="col-lg-7 col-md-1">
+                <div class="box box-stretched">
+                    <p:galleria rendered="#{detalleProductoBean.producto.rutaImagen.size() > 0}" value="#{detalleProductoBean.producto.rutaImagen}" var="imagen" panelHeight="425">
+                        <p:graphicImage url="/uploads/#{imagen}" alt="Image Description for #{imagen}" title="#{imagen}" styleClass="rounded shadow" />
+                    </p:galleria>
+                    <p:graphicImage rendered="#{detalleProductoBean.producto.rutaImagen.size() == 0}" url="/uploads/#{detalleProductoBean.producto.imagenPrincipal}" alt="Image Description for #{detalleProductoBean.producto.imagenPrincipal}" title="#{detalleProductoBean.producto.imagenPrincipal}" styleClass="imagen-default rounded" />
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-md-1">
+                <div class="p-grid">
+                    <div class="box">
+                        <h1 class="mt-4">#{detalleProductoBean.producto.nombrePublicacion}</h1>
+
+                        <h:form class="mt-4" rendered="#{seguridadBean.autenticado}">
+                            <p:commandButton value="Añadir al carrito" icon="pi pi-shopping-cart" update="@form" action="#{seguridadBean.agregarAlCarrito(detalleProductoBean.producto.codigo, detalleProductoBean.producto.descuentoVisible, detalleProductoBean.producto.nombre, detalleProductoBean.producto.imagenPrincipal)}" />
+                            <p:growl for="add-cart" showDetail="true" />
+
+
+                            <p:commandButton style="margin-left: 10px" value="Añadir a favoritos" icon="pi pi-heart" update="@form" action="#{seguridadBean.agregarFavorito(detalleProductoBean.producto)}" />
+                            <p:growl for="favorito-msj" showDetail="true" />
+
+                        </h:form>
+                    </div>
+
+                    <div jsf:rendered="#{detalleProductoBean.producto.descuento > 0}">
+                        <h4 class="mt-4 precio-antes"><del>#{detalleProductoBean.precioVisible}</del></h4>
+                        <div class="precio-muestra"><h2>#{detalleProductoBean.descuentoVisible}<span style="color: green; font-size: medium; position: absolute"> #{detalleProductoBean.producto.descuento}% OFF</span></h2></div>
+                    </div>
+
+                    <div jsf:rendered="#{detalleProductoBean.producto.descuento == 0}">
+                        <h2 class="mt-4">#{detalleProductoBean.precioVisible}</h2>
+
+                    </div>
+                    <div class="box">
+                        <p style="text-align: left">Ciudad: #{detalleProductoBean.producto.ciudad.nombre}</p>
+                    </div>
+
+                    <p:dataList emptyMessage="No hay cayegorías para este producto" styleClass="lista-carac" value="#{detalleProductoBean.producto.nombreCategorias}" var="categoria" >
+                        <f:facet name="header" >Categoría</f:facet>
+                        <p>#{categoria}</p>
+                    </p:dataList>
+                </div>
+
+                <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartir</a></div>
+                <div style="margin-top: 10px"> <a href="https://twitter.com/intent/tweet?button_hashtag=localhost:8080/detalle_producto.xhtml/?producto=#{detalleProductoBean.producto.codigo}&amp;ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #localhost:8080</a><script async="true" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+                <h:form>
+                    <p:commandButton value="Chat vendedor" icon="pi pi-send" iconPos="left" styleClass="mt-4" action="#{detalleProductoBean.crearChat}" rendered="#{seguridadBean.autenticado}" />
+                </h:form>
+            </div>
+        </div>
+
+        <p:panel header="Descripción" styleClass="mt-3">
+            <h:outputText value="#{detalleProductoBean.producto.descripcion}" escape="false"/>
+        </p:panel>
+
+        <p:panel header="Hacer un comentario" styleClass="mt-3" rendered="#{seguridadBean.autenticado}" >
+            <h:form id="crear-comentario">
+                <h:panelGrid columns="2" cellpadding="3">
+                    <p:inputTextarea value="#{detalleProductoBean.nuevoComentario.mensaje}" required="true" styleClass="comentario-usuario" />
+                    <p:rating value="#{detalleProductoBean.nuevoComentario.calificacion}" required="true"/>
+                </h:panelGrid>
+                <p:commandButton value="Comentar" icon="pi pi-comment" iconPos="left" update="@form, lista-com" styleClass="mt-4" action="#{detalleProductoBean.crearComentario}" />
+                <p:growl for="msj-pregunta" showDetail="true" />
+            </h:form>
+        </p:panel>
+
+        <p:panel header="Comentarios" styleClass="mt-3">
+            <div class="blog-comment">
+                <ul class="comments" >
+                    <p:dataList id="lista-com" value="#{detalleProductoBean.comentarios}" var="comentario" emptyMessage="No hay comentarios" type="definition">
+                        <li class="clearfix">
+                            <img src="/uploads/avatar.png" class="avatar" alt="" />
+                            <div class="post-comments">
+                                <p class="meta">#{comentario.fechaEstilo} <a href="#">#{comentario.usuario.nombre}</a> dijo: <i class="pull-right" style="visibility: hidden"><a href="#"><small>Reply</small></a></i></p>
+                                <p>#{comentario.mensaje}</p>
+                                <p:rating readonly="true" value="#{comentario.calificacion}" />
+                            </div>
+
+                            <ul class="comments" jsf:rendered="#{comentario.respuesta != null}">
+                                <li class="clearfix">
+                                    <img src="/uploads/avatar.png" class="avatar" alt="" />
+                                    <div class="post-comments">
+                                        <p class="meta">#{comentario.fecha} <a href="#">#{comentario.producto.vendedor.nombre}</a> dijo: </p>
+                                        <p>#{comentario.respuesta}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </p:dataList>
+                </ul>
+            </div>
+        </p:panel>
+
+    </ui:define>
+</ui:composition>
+
+</html>

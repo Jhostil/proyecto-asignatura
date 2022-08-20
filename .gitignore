@@ -1,0 +1,15 @@
+#Archivos compilados
+*.class
+
+#Archivos temporales de Maven
+/**/target/
+
+#Archivos de Intellij
+*.iml
+/.idea
+
+#Ignora archis del sistema Mac
+.DS_store
+/persistencia/target/
+
+web/src/main/webapp/uploads
