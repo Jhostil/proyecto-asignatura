@@ -17,6 +17,7 @@
 
     <properties>
         <joinfaces.version>4.6.0</joinfaces.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencyManagement>
         <dependencies>

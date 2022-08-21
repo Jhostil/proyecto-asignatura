@@ -13,6 +13,9 @@
     <name>Módulo de persistencia</name>
     <description>Este modulo define todos los objetos del dominio del sistema</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
