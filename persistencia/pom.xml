@@ -14,8 +14,12 @@
     <description>Este modulo define todos los objetos del dominio del sistema</description>
 
     <properties>
+        <joinfaces.version>4.6.0</joinfaces.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
     </properties>
     <dependencies>
         <dependency>
