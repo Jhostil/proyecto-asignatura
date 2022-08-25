@@ -137,9 +137,9 @@ public class UsuarioTest {
     @Sql("classpath:datos.sql")
     public void listarUsuariosProductosTest(){
 
-        List<UsuarioYProducto> respuesta = usuarioRepo.listarUsuariosYProductos();
+     //   List<UsuarioYProducto> respuesta = usuarioRepo.listarUsuariosYProductos();
 
-        respuesta.forEach(System.out::println);
+       // respuesta.forEach(System.out::println);
     }
 
     @Test
