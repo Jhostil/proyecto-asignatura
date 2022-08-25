@@ -14,9 +14,6 @@
     <name>Proyecto de logica de negocio</name>
     <description>Proyecto que representa la logica de negocio y el acceso a los datos</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.jasypt</groupId>

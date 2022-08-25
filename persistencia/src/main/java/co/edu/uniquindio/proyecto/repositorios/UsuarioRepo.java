@@ -31,8 +31,8 @@ public interface UsuarioRepo extends JpaRepository<Usuario, String> {
     @Query("select p from Usuario u, IN (u.productosFavoritos) p where u.codigo = :codigo")
     List<Producto> obtenerProductosFavoritos(String codigo);
 
-    @Query("select new co.edu.uniquindio.proyecto.dto.UsuarioYProducto(u.email, u.nombre, p) from Usuario u left join u.productosVenta p")
-    List<UsuarioYProducto> listarUsuariosYProductos();
+    //@Query("select new co.edu.uniquindio.proyecto.dto.UsuarioYProducto(u.email, u.nombre, p) from Usuario u left join u.productosVenta p")
+    //List<UsuarioYProducto> listarUsuariosYProductos();
 
     @Query("select distinct c.usuario from Producto p join p.comentarios c where p.codigo = :id")
     List<Usuario> listarUsuariosComentario(Integer id);
